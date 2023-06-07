@@ -1,0 +1,21 @@
+// TODO: 続きはP.55から
+
+import 'phaser';
+import Game from './scenes/game';
+import Preloader from './scenes/preloader';
+
+const config: Phaser.Types.Core.GameConfig = {
+	type: Phaser.AUTO,
+	width: 800,
+	height: 640,
+	physics: {
+		default: 'arcade',
+		arcade: {
+			gravity: { y: 200 },
+			debug: true
+		}
+	},
+	scene: [Preloader, Game]
+};
+
+export default new Phaser.Game(config);
