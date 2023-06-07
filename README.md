@@ -44,6 +44,15 @@ This bundles your files to the distribution (`/dist`) folder. The webpack config
 
 _If you are publishing your game to [itch.io](https://itch.io) simply zip up the files in the `/dist` folder and upload the zip file._
 
+### Deploy GitHub page
+
+```
+npm run deploy
+```
+
+The contents of the "dist" folder will be deployed to GitHub Pages.
+Please modify the URL in the "homepage" field of the package.json as needed.
+
 ## Community
 
 This repository is actively maintained. Every so often I upgrade the packages and add features. I like boilerplates to be light so I have kept it minimal. But if you think this package would benefit from additional features then feel free to reach out or add an issue.

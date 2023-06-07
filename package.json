@@ -1,9 +1,11 @@
 {
-  "name": "phaser-webpack",
+  "name": "phaser3-webpack-starter-ts",
+  "homepage": "https://atman-33.github.io/phaser3-webpack-starter-ts",
   "version": "4.0.0",
   "description": "Phaser Webpack",
   "main": "src/js/index.ts",
   "scripts": {
+    "deploy": "npm run build && gh-pages -d dist -m \"Updates --skip-ci\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --mode development",
     "build": "webpack --mode production"
@@ -22,13 +24,13 @@
       "@babel/preset-env"
     ]
   },
-  "homepage": "https://github.com/sebsowter/phaser-webpack#readme",
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
     "babel-loader": "^9.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "file-loader": "^6.2.0",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "json-loader": "^0.5.7",
     "phaser": "^v3.60.0-beta.23",
