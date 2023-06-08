@@ -36,20 +36,41 @@ export default class Preloader extends Phaser.Scene {
             TextureKeys.RocketMouse,
             './assets/images/characters/rocket-mouse.png',
             './assets/images/characters/rocket-mouse.json');
+
+        this.load.image(TextureKeys.LaserEnd, './assets/images/house/object_laser_end.png');
+        this.load.image(TextureKeys.LaserMiddle, './assets/images/house/object_laser.png');
     }
 
     create() {
         this.anims.create({
             key: AnimationKeys.RocketMouseRun,
-            frames: this.anims.generateFrameNames(TextureKeys.RocketMouse, {
-                prefix: 'rocketmouse_run',
-                zeroPad: 2,
-                start: 1,
-                end: 4,
-                suffix: '.png'
-            }),
+            frames: this.anims.generateFrameNames(
+                TextureKeys.RocketMouse,
+                {
+                    prefix: 'rocketmouse_run',
+                    zeroPad: 2,
+                    start: 1,
+                    end: 4,
+                    suffix: '.png'
+                }),
             frameRate: 10,
             repeat: -1  // -1 to loop forever
+        });
+
+        this.anims.create({
+            key: AnimationKeys.RocketFlamesFall,
+            frames: [{
+                key: TextureKeys.RocketMouse,
+                frame: 'rocketmouse_fall01.png'
+            }]
+        });
+
+        this.anims.create({
+            key: AnimationKeys.RocketFlamesFly,
+            frames: [{
+                key: TextureKeys.RocketMouse,
+                frame: 'rocketmouse_fly01.png'
+            }]
         });
 
         this.anims.create({
@@ -60,6 +81,20 @@ export default class Preloader extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: AnimationKeys.RocketMouseDead,
+            frames: this.anims.generateFrameNames(TextureKeys.RocketMouse,
+                {
+                    prefix: 'rocketmouse_dead',
+                    zeroPad: 2,
+                    start: 1,
+                    end: 2,
+                    suffix: '.png'
+                }),
+                frameRate: 10
+        });
+
+        // go to game scene
         this.scene.start(SceneKeys.Game);
     }
 }

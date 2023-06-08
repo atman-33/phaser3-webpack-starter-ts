@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import SceneKeys from '../consts/scene-keys';
 import TextureKeys from '../consts/texture-keys';
+import LaserObstacle from '../objects/laser-obstacle';
 import RocketMouse from '../objects/rocket-mouse';
 
 export default class Game extends Phaser.Scene {
@@ -14,6 +15,8 @@ export default class Game extends Phaser.Scene {
 
     private bookcases: Phaser.GameObjects.Image[] = [];
     private windows: Phaser.GameObjects.Image[] = [];
+
+    private laserObstacle!: LaserObstacle;
 
     /**
      *
@@ -65,6 +68,10 @@ export default class Game extends Phaser.Scene {
 
         this.bookcases = [this.bookcase1, this.bookcase2];
 
+        // add laser obstacle
+        this.laserObstacle = new LaserObstacle(this, 900, 100);
+        this.add.existing(this.laserObstacle);
+
         // add mouse
         const mouse = new RocketMouse(this, width * 0.5, height - 30);
         this.add.existing(mouse);
@@ -86,6 +93,20 @@ export default class Game extends Phaser.Scene {
         this.cameras.main.startFollow(mouse);
         this.cameras.main.setBounds(0, 0, Number.MAX_SAFE_INTEGER, height);
 
+        // overlap
+        this.physics.add.overlap(
+            this.laserObstacle,
+            mouse,
+            () => this.handleOverlapLaser(this.laserObstacle, mouse),
+            undefined,
+            this
+        );
+
+    }
+
+    handleOverlapLaser(laserObstacle: LaserObstacle, mouse: RocketMouse): void {
+        console.log('overlap!');
+        mouse.kill();
     }
 
     update(t: number, dt: number) {
@@ -93,6 +114,7 @@ export default class Game extends Phaser.Scene {
         this.wrapMouseHole();
         this.wrapWindows();
         this.wrapBookcases();
+        this.wrapLaserObstacle();
 
         // scroll the background
         this.background.setTilePosition(this.cameras.main.scrollX);
@@ -170,6 +192,25 @@ export default class Game extends Phaser.Scene {
             });
 
             this.bookcase2.visible = !overlap;
+        }
+    }
+
+    private wrapLaserObstacle() {
+        const scrollX = this.cameras.main.scrollX;
+        const rightEdge = scrollX + this.scale.width;
+
+        const body = this.laserObstacle.body as Phaser.Physics.Arcade.StaticBody;
+
+        const width = body.width;
+        if (this.laserObstacle.x + width < scrollX) {
+            this.laserObstacle.x = Phaser.Math.Between(
+                rightEdge + width,
+                rightEdge + width + 1000
+            );
+            this.laserObstacle.y = Phaser.Math.Between(0, 300);
+
+            body.position.x = this.laserObstacle.x + body.offset.x;
+            body.position.y = this.laserObstacle.y;
         }
     }
 }

@@ -1,5 +1,3 @@
-// TODO: 続きはP.55から
-
 import 'phaser';
 import Game from './scenes/game';
 import Preloader from './scenes/preloader';
