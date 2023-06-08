@@ -42,8 +42,8 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
         scene.physics.add.existing(this);
 
         const body = this.body as Phaser.Physics.Arcade.Body;
-        body.setSize(this.mouse.width, this.mouse.height);
-        body.setOffset(this.mouse.width * -0.5, -this.mouse.height);
+        body.setSize(this.mouse.width * 0.5, this.mouse.height * 0.7);
+        body.setOffset(this.mouse.width * -0.3, -this.mouse.height + 15);
 
         // create cursor keys
         this.cursors = scene.input.keyboard.createCursorKeys();
@@ -80,7 +80,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
                 break;
             }
             case MouseState.Killed: {
-                body.velocity.x *= 0.9;
+                body.velocity.x *= 0.98;
 
                 if (body.velocity.x <= 5) {
                     this.mouseState = MouseState.Dead;

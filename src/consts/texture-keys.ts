@@ -10,6 +10,7 @@ enum TextureKeys {
     LaserMiddle = 'laser-middle',
 
     RocketMouse = 'rocket-mouse',
+    Coin = "coin"
 }
 
 export default TextureKeys;

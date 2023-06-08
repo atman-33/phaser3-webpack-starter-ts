@@ -1,3 +1,5 @@
+// TODO: next is P.87~
+
 import 'phaser';
 import Game from './scenes/game';
 import GameOver from './scenes/game-over';
