@@ -18,6 +18,8 @@ export default class Game extends Phaser.Scene {
 
     private laserObstacle!: LaserObstacle;
 
+    private mouse!: RocketMouse;
+
     /**
      *
      */
@@ -73,11 +75,17 @@ export default class Game extends Phaser.Scene {
         this.add.existing(this.laserObstacle);
 
         // add mouse
-        const mouse = new RocketMouse(this, width * 0.5, height - 30);
-        this.add.existing(mouse);
+        this.mouse = new RocketMouse(this, width * 0.5, height - 30);
+        this.add.existing(this.mouse);
+
+        // if mouse is dead then run GameOver scene
+        this.mouse.emitter.once('dead', () => {
+            // console.log('run GameOver scene');
+            this.scene.run(SceneKeys.GameOver);
+        });
 
         // mouse can be on the ground
-        const body = mouse.body as Phaser.Physics.Arcade.Body;
+        const body = this.mouse.body as Phaser.Physics.Arcade.Body;
         body.setCollideWorldBounds(true);
 
         // mouse moves to x
@@ -90,14 +98,14 @@ export default class Game extends Phaser.Scene {
         );
 
         // camera
-        this.cameras.main.startFollow(mouse);
+        this.cameras.main.startFollow(this.mouse);
         this.cameras.main.setBounds(0, 0, Number.MAX_SAFE_INTEGER, height);
 
         // overlap
         this.physics.add.overlap(
             this.laserObstacle,
-            mouse,
-            () => this.handleOverlapLaser(this.laserObstacle, mouse),
+            this.mouse,
+            () => this.handleOverlapLaser(this.laserObstacle, this.mouse),
             undefined,
             this
         );
@@ -105,8 +113,8 @@ export default class Game extends Phaser.Scene {
     }
 
     handleOverlapLaser(laserObstacle: LaserObstacle, mouse: RocketMouse): void {
-        console.log('overlap!');
-        mouse.kill();
+        // console.log('overlap!');
+        this.mouse.kill();
     }
 
     update(t: number, dt: number) {

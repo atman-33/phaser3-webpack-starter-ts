@@ -1,6 +1,5 @@
 import * as Phaser from 'phaser';
 import AnimationKeys from '../consts/animation-keys';
-import SceneKeys from '../consts/scene-keys';
 import TextureKeys from '../consts/texture-keys';
 
 enum MouseState {
@@ -17,6 +16,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
     private mouse: Phaser.GameObjects.Sprite;
+    public emitter: Phaser.Events.EventEmitter;
 
     /**
      *
@@ -24,6 +24,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
     constructor(scene: Phaser.Scene, x: number, y: number) {
 
         super(scene, x, y);
+        this.emitter = new Phaser.Events.EventEmitter();
 
         // create the mouse
         this.mouse = scene.add.sprite(0, 0, TextureKeys.RocketMouse)
@@ -79,17 +80,17 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
                 break;
             }
             case MouseState.Killed: {
-                body.velocity.x *= 0.99;
+                body.velocity.x *= 0.9;
 
                 if (body.velocity.x <= 5) {
                     this.mouseState = MouseState.Dead;
+                    this.emitter.emit('dead');
+                    // console.log('mouse dead...');
                 }
                 break;
             }
             case MouseState.Dead: {
                 body.setVelocity(0, 0);
-
-                this.scene.scene.run(SceneKeys.GameOver);
                 break;
             }
         }
