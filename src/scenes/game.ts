@@ -48,7 +48,8 @@ export default class Game extends Phaser.Scene {
         this.mouseHole = this.add.image(
             Phaser.Math.Between(900, 1500),
             501,
-            TextureKeys.MouseHole);
+            TextureKeys.MouseHole)
+            .setInteractive();
 
         // add windows
         this.window1 = this.add.image(
@@ -115,23 +116,20 @@ export default class Game extends Phaser.Scene {
 
         // overlap
         this.physics.add.overlap(
-            this.laserObstacle,
             this.mouse,
-            () => this.handleOverlapLaser(this.laserObstacle, this.mouse),
+            this.laserObstacle,
+            (mouser, laserObstacle) => this.handleOverlapLaser(mouser, laserObstacle),
             undefined,
             this
         );
 
-        this.coins.children.each(coin => {
-            this.physics.add.overlap(
-                coin,
-                this.mouse,
-                () => this.handleCollectCoin(coin, this.mouse),
-                undefined,
-                this
-            );
-            return true;
-        });
+        this.physics.add.overlap(
+            this.mouse,
+            this.coins,
+            (mouse, coins) => this.handleCollectCoin(mouse, coins),
+            undefined,
+            this
+        );
 
         // add score
         this.scoreLabel = this.add.text(10, 10, `Score: ${this.score}`, {
@@ -144,6 +142,25 @@ export default class Game extends Phaser.Scene {
     }
 
     update(t: number, dt: number) {
+        this.mouseHole.on('pointerdown', (pointer) => {
+            console.log('mouse hole clicked!');
+        }, this.mouseHole);
+
+        // the click event should be performed on the mouse sprite!
+        this.mouse.getMouseSplite().on('pointerdown', (pointer) => {
+            console.log('mouse clicked!');
+        }, this.mouse.getMouseSplite());
+
+        this.input.on('pointerdown', (pointer) => {
+            // console.log('pointer down!');
+            this.mouse.isFlying = true;
+        }, this);
+
+        this.input.on('pointerup', (pointer) => {
+            // console.log('pointer up!');
+            this.mouse.isFlying = false;
+        }, this);
+
         // create new objects if nesessary 
         this.wrapMouseHole();
         this.wrapWindows();
@@ -186,15 +203,16 @@ export default class Game extends Phaser.Scene {
         }
     }
 
-    private handleOverlapLaser(laserObstacle: LaserObstacle, mouse: RocketMouse): void {
+    private handleOverlapLaser(mouse: any, laserObstacle: any): void {
         // console.log('overlap!');
         this.mouse.kill();
     }
 
-    private handleCollectCoin(coin: Phaser.GameObjects.GameObject, mouse: RocketMouse): void {
-        const sprite = coin as Phaser.Physics.Arcade.Sprite;
-        this.coins.killAndHide(sprite);
-        sprite.body.enable = false;
+    private handleCollectCoin(mouse: any, coins: any): void {
+        // console.log('overlap mouse and coin!');
+        const coin = coins as Phaser.Physics.Arcade.Sprite;
+        this.coins.killAndHide(coin);
+        coin.body.enable = false;
 
         this.score += 1;
         this.scoreLabel.text = `Score: ${this.score}`;

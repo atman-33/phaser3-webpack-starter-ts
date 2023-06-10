@@ -16,7 +16,7 @@ export default class GameOver extends Phaser.Scene {
         const x = width * 0.5;
         const y = height * 0.5;
 
-        this.add.text(x, y, 'Press SPACE to Play Again', {
+        this.add.text(x, y, 'Press SPACE or CLICK to Play Again', {
             fontSize: '32px',
             color: '#FFFFFF',
             backgroundColor: '#000000',
@@ -25,12 +25,20 @@ export default class GameOver extends Phaser.Scene {
         }).setOrigin(0.5);
 
         this.input.keyboard.once('keydown-SPACE', () => {
-            // stop the GameOver scene
-            this.scene.stop(SceneKeys.GameOver)
+            this.changeGameScene();
+        });
 
-            // stop and restart the Game scene
-            this.scene.stop(SceneKeys.Game);
-            this.scene.start(SceneKeys.Game);
-        })
+        this.input.on('pointerdown', () => {
+            this.changeGameScene();
+        });
+    }
+
+    private changeGameScene() {
+        // stop the GameOver scene
+        this.scene.stop(SceneKeys.GameOver);
+
+        // stop and restart the Game scene
+        this.scene.stop(SceneKeys.Game);
+        this.scene.start(SceneKeys.Game);
     }
 } 
