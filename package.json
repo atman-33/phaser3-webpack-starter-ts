@@ -2,7 +2,7 @@
   "name": "phaser3-webpack-starter-ts",
   "homepage": "https://atman-33.github.io/phaser3-webpack-starter-ts",
   "version": "4.0.0",
-  "description": "Phaser Webpack",
+  "description": "Phaser3 Webpack Starter",
   "main": "src/js/index.ts",
   "scripts": {
     "deploy": "npm run build && gh-pages -d dist -m \"Updates --skip-ci\"",
