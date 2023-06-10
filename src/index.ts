@@ -3,6 +3,9 @@ import Game from './scenes/game';
 import GameOver from './scenes/game-over';
 import Preloader from './scenes/preloader';
 
+console.log(`mode: ${process.env.NODE_ENV}`);
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
 	width: 800,
@@ -11,7 +14,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {
 			gravity: { y: 200 },
-			debug: true
+			debug: isDevelopment
 		}
 	},
 	scene: [Preloader, Game, GameOver]
