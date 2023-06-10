@@ -152,6 +152,8 @@ export default class Game extends Phaser.Scene {
 
         // scroll the background
         this.background.setTilePosition(this.cameras.main.scrollX);
+
+        this.teleportBackwards();
     }
 
     private spawnCoins() {
@@ -270,9 +272,6 @@ export default class Game extends Phaser.Scene {
             });
 
             this.bookcase2.visible = !overlap;
-
-            // spawn coins
-            this.spawnCoins();
         }
     }
 
@@ -292,6 +291,44 @@ export default class Game extends Phaser.Scene {
 
             body.position.x = this.laserObstacle.x + body.offset.x;
             body.position.y = this.laserObstacle.y;
+        }
+    }
+
+    private teleportBackwards() {
+        const scrollX = this.cameras.main.scrollX;
+        const maxX = 2380;
+
+        if (scrollX > maxX) {
+            this.mouse.x -= maxX;
+            this.mouseHole.x -= maxX;
+
+            this.windows.forEach(win => {
+                win.x -= maxX;
+            });
+
+            this.bookcases.forEach(bc => {
+                bc.x -= maxX;
+            });
+
+            this.laserObstacle.x -= maxX;
+            const laserBody = this.laserObstacle.body as Phaser.Physics.Arcade.StaticBody;
+
+            laserBody.x -= maxX;
+
+            // spawn coins
+            this.spawnCoins();
+
+            this.coins.children.each(child => {
+                const coin = child as Phaser.Physics.Arcade.Sprite;
+                if (!coin.active) {
+                    return;
+                }
+
+                coin.x -= maxX;
+                const body = coin.body as Phaser.Physics.Arcade.StaticBody;
+                body.updateFromGameObject();
+                return true;
+            });
         }
     }
 }
