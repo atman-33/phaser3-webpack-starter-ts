@@ -62,6 +62,10 @@ module.exports = {
           from: "src/assets/",
           to: "assets/",
         },
+        {
+          from: "src/index.css",
+          to: "index.css",
+        },
       ],
     }),
     new HtmlWebpackPlugin({
