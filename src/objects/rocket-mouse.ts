@@ -17,6 +17,8 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
 
     private mouse: Phaser.GameObjects.Sprite;
     public emitter: Phaser.Events.EventEmitter;
+    
+    public isFlying: boolean = false;
 
     /**
      *
@@ -29,7 +31,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
         // create the mouse
         this.mouse = scene.add.sprite(0, 0, TextureKeys.RocketMouse)
             .setOrigin(0.5, 1)
-            .play(AnimationKeys.RocketMouseRun);
+            .play(AnimationKeys.RocketMouseRun).setInteractive();
 
         this.flames = scene.add.sprite(-63, -15, TextureKeys.RocketMouse)
             .play(AnimationKeys.RocketFlamesOn);
@@ -49,6 +51,10 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
 
         // create cursor keys
         this.cursors = scene.input.keyboard.createCursorKeys();
+    }
+
+    public getMouseSplite(){
+        return this.mouse;
     }
 
     private createAnimations() {
@@ -106,15 +112,12 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
     }
 
     preUpdate() {
-
         const body = this.body as Phaser.Physics.Arcade.Body;
 
         switch (this.mouseState) {
 
             case MouseState.Running: {
-
-
-                if (this.cursors.space?.isDown) {
+                if (this.cursors.space?.isDown || this.isFlying) {
                     body.setAccelerationY(-600);
                     this.enableJetpack(true);
 
@@ -135,6 +138,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
                 }
                 break;
             }
+
             case MouseState.Killed: {
                 body.velocity.x *= 0.98;
 
@@ -145,6 +149,7 @@ export default class RocketMouse extends Phaser.GameObjects.Container {
                 }
                 break;
             }
+
             case MouseState.Dead: {
                 body.setVelocity(0, 0);
                 break;

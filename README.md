@@ -4,6 +4,8 @@ Get up and running with Phaser 3 using TypeScript or JavaScript ES6.
 
 This Webpack setup takes care of your code bundling and local development server.
 
+[View the demo](https://atman-33.github.io/phaser3-webpack-starter-ts/)
+
 ![Game screen](img/game.png)
 
 ## Installation
