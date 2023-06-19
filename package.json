@@ -1,8 +1,8 @@
 {
-  "name": "phaser3-webpack-starter-ts",
-  "homepage": "https://atman-33.github.io/phaser3-webpack-starter-ts",
+  "name": "phaser3-webpack-typescript-template",
+  "homepage": "https://atman-33.github.io/phaser3-webpack-typescript-template",
   "version": "4.0.0",
-  "description": "Phaser3 Webpack Starter",
+  "description": "Phaser3 Webpack Template",
   "main": "src/js/index.ts",
   "scripts": {
     "deploy": "npm run build && gh-pages -d dist -m \"Updates --skip-ci\"",

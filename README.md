@@ -4,7 +4,7 @@ Get up and running with Phaser 3 using TypeScript or JavaScript ES6.
 
 This Webpack setup takes care of your code bundling and local development server.
 
-[View the demo](https://atman-33.github.io/phaser3-webpack-starter-ts/)
+[View the demo](https://atman-33.github.io/phaser3-webpack-typescript-template/)
 
 ![Game screen](img/game.png)
 
@@ -48,8 +48,8 @@ Please modify the URL in the "homepage" field of the package.json as needed.
 package.json
 ```json
 {
-  "name": "phaser3-webpack-starter-ts",
-  "homepage": "https://atman-33.github.io/phaser3-webpack-starter-ts",
+  "name": "phaser3-webpack-typescript-template",
+  "homepage": "https://atman-33.github.io/phaser3-webpack-typescript-template",
   ...
 ```
 
